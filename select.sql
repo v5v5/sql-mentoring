@@ -21,43 +21,12 @@ stuff((SELECT ','+convert(nvarchar(3),RoleId)
             ,1,1,'')
 from FitnessClub.dbo.Users as u
 
-select u.Name, stuff((SELECT ','+convert(nvarchar(20),RoleId)
-               FROM FitnessClub.dbo.UsersRoles
-               FOR XML PATH(''), TYPE).value('.', 'varchar(max)')
+select u.Name, stuff((select ','+convert(nvarchar(20),RoleId)
+               from FitnessClub.dbo.UsersRoles as ur
+				where u.Id=ur.UserId
+               for xml path(''), type).value('.', 'varchar(max)')
             ,1,1,'')
 from FitnessClub.dbo.Users as u
-
-select concat(CONVERT(VARCHAR(3),RoleId),',')
-from FitnessClub.dbo.UsersRoles as ur
-
-select u.Name, ur.RoleId
-from FitnessClub.dbo.Users as u
-join FitnessClub.dbo.UsersRoles as ur on u.Id = ur.RoleId
-
-
-
-
-FitnessClub.dbo.Users as u
-FitnessClub.dbo.UsersRoles as ur
-FitnessClub.dbo.Roles as r
-
-
-select c.Name, count(t.Id) as CountTickets
-from FitnessClub.dbo.Customers as c, FitnessClub.dbo.Tickets as t
-where (c.Id = t.CustomerId) and (CountTickets > 1)
-group by c.Name
-
-select c.Name, count(*)
-from FitnessClub.dbo.Customers as c
-inner join FitnessClub.dbo.Tickets as t
-
-
-
-
-
-select c.Name, 
-	(select Name + ',') from FitnessClub.dbo.Roles for xml path (''))
-from FitnessClub.dbo.Customers as c
 
 
 
