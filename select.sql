@@ -28,5 +28,10 @@ select u.Name, stuff((select ','+convert(nvarchar(20),RoleId)
             ,1,1,'')
 from FitnessClub.dbo.Users as u
 
+--...
 
-
+--select 5
+select c.Name, 
+	(select count(Id) from FitnessClub.dbo.Tickets as t where c.Id = t.CustomerId) as Count
+from FitnessClub.dbo.Customers as c
+where (select count(Id) from FitnessClub.dbo.Tickets as t where c.Id = t.CustomerId) > 1
