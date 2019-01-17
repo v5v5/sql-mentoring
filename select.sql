@@ -38,6 +38,7 @@ full outer join FitnessClub.dbo.Cities as cities on cities.Id = customers.CityId
 group by cities.Name
 
 --select 4
+--version 1
 select u.Name,
 stuff((SELECT ','+convert(nvarchar(3),RoleId)
                FROM FitnessClub.dbo.UsersRoles
@@ -51,14 +52,27 @@ select u.Name, stuff((select ','+convert(nvarchar(20),RoleId)
                for xml path(''), type).value('.', 'varchar(max)')
             ,1,1,'')
 from FitnessClub.dbo.Users as u
--- will change using join
--- concat
---...
+-- version 2 - using by join + concat
+--select u.Name
+select u.Name, r.Name
+from FitnessClub.dbo.Users as u
+--cross join FitnessClub.dbo.UsersRoles as ur
+inner join FitnessClub.dbo.UsersRoles as ur on u.Id = ur.UserId
+--cross join FitnessClub.dbo.Roles as r
+inner join FitnessClub.dbo.Roles as r on r.Id = ur.RoleId
 
 --select 5
+-- version 1
 select c.Name, 
 	(select count(Id) from FitnessClub.dbo.Tickets as t where c.Id = t.CustomerId) as Count
 from FitnessClub.dbo.Customers as c
 where (select count(Id) from FitnessClub.dbo.Tickets as t where c.Id = t.CustomerId) > 1
--- will change using join + group by
---...
+-- version 2 - using by join + group by
+select c.Name, count(c.Name)
+from FitnessClub.dbo.Customers as c
+--cross join FitnessClub.dbo.Tickets as tickets
+inner join FitnessClub.dbo.Tickets as t on c.Id = t.CustomerId
+group by c.Name
+having count(c.Name)>1
+order by c.Name
+
