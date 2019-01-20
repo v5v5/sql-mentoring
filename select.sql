@@ -67,6 +67,7 @@ select c.Name,
 	(select count(Id) from FitnessClub.dbo.Tickets as t where c.Id = t.CustomerId) as Count
 from FitnessClub.dbo.Customers as c
 where (select count(Id) from FitnessClub.dbo.Tickets as t where c.Id = t.CustomerId) > 1
+
 -- version 2 - using by join + group by
 select c.Name, count(c.Name)
 from FitnessClub.dbo.Customers as c
@@ -75,4 +76,23 @@ inner join FitnessClub.dbo.Tickets as t on c.Id = t.CustomerId
 group by c.Name
 having count(c.Name)>1
 order by c.Name
+
+--select 6
+select c.Name, Max(t.CreatedOn) as 'Last Ticket'
+from FitnessClub..Customers as c
+full join FitnessClub..Tickets as t on c.Id = t.CustomerId
+group by c.Name
+
+--select 7
+select Name from FitnessClub..Customers
+union 
+select Name from FitnessClub..TicketTypes
+union 
+select Name from FitnessClub..Cities
+
+--select 8
+select CreatedOn, count(Id) as 'Count'
+from FitnessClub..Tickets
+group by CreatedOn
+
 
