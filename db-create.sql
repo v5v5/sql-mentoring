@@ -111,7 +111,7 @@ BEGIN
 	EXEC('CREATE TABLE '+ @table + '(' +
 		'Id int IDENTITY(1,1) PRIMARY KEY,' +
 		'TicketTypeId int FOREIGN KEY REFERENCES TicketTypes(Id),' +
-		'CreatedOn date NOT NULL,' +
+		'CreatedOn datetime NOT NULL,' +
 		'AmountDays int NOT NULL,' +
 		'CustomerId int FOREIGN KEY REFERENCES Customers(Id),' +
 		'UserId int FOREIGN KEY REFERENCES Users(Id)' +
@@ -137,3 +137,6 @@ ELSE
 BEGIN
 	PRINT 'table "' + @table + '" exists.'
 END
+
+USE master;
+GO

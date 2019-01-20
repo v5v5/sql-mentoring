@@ -94,9 +94,9 @@ DECLARE @TicketTypeId int;
 DECLARE @MaxTicketType int = (SELECT COUNT(DISTINCT Name) FROM TicketTypes);
 DECLARE @MaxTickets int = 20;
 
-DECLARE @FromDate date = '2018-01-01'
-DECLARE @ToDate date = '2019-12-31'
-DECLARE @CreatedOn date;
+DECLARE @FromDate datetime = '2018-01-01'
+DECLARE @ToDate datetime = '2019-12-31'
+DECLARE @CreatedOn datetime;
 DECLARE @AmountDays int;
 DECLARE @CustomerId int;
 DECLARE @UserId int;
@@ -184,3 +184,7 @@ INSERT INTO UsersRoles (UserId, RoleId)
 VALUES (6, 1)
 INSERT INTO UsersRoles (UserId, RoleId)
 VALUES (6, 3)
+
+USE master;
+GO
+
