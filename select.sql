@@ -91,7 +91,7 @@ union
 select Name from FitnessClub..Cities
 
 --select 8
-select CreatedOn, count(Id) as 'Count'
+select convert(date, CreatedOn) as Date, count(Id) as 'Count'
 from FitnessClub..Tickets
 group by CreatedOn
 
