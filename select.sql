@@ -46,11 +46,10 @@ stuff((SELECT ','+convert(nvarchar(3),RoleId)
             ,1,1,'')
 from FitnessClub.dbo.Users as u
 
-select u.Name, stuff((select ','+convert(nvarchar(20),RoleId)
-               from FitnessClub.dbo.UsersRoles as ur
+select u.Name,	stuff((select ','+convert(nvarchar(20),RoleId)
+				from FitnessClub.dbo.UsersRoles as ur
 				where u.Id=ur.UserId
-               for xml path(''), type).value('.', 'varchar(max)')
-            ,1,1,'')
+				for xml path(''), type).value('.', 'varchar(max)'),1,1,'')
 from FitnessClub.dbo.Users as u
 -- version 2 - using by join + concat
 --select u.Name
