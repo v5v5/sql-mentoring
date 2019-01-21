@@ -60,7 +60,6 @@ inner join FitnessClub.dbo.UsersRoles as ur on u.Id = ur.UserId
 --cross join FitnessClub.dbo.Roles as r
 inner join FitnessClub.dbo.Roles as r on r.Id = ur.RoleId
 
-
 --select 5
 -- version 1
 select c.Name, 
