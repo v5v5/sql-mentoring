@@ -31,11 +31,30 @@ select cities.Name,
 from FitnessClub.dbo.Cities as cities
 --version 2 - using by join
 --select *
-select cities.Name, count(customers.CityId) as CountCustomers
+select *--cities.Name, count(customers.CityId) as CountCustomers
 from FitnessClub.dbo.Customers as customers
 --cross join FitnessClub.dbo.Customers as customers on cities.Id = 
-full outer join FitnessClub.dbo.Cities as cities on cities.Id = customers.CityId 
-group by cities.Name
+right join FitnessClub.dbo.Cities as cities on cities.Id = customers.CityId 
+--full outer join FitnessClub.dbo.Cities as cities on cities.Id = customers.CityId 
+--group by cities.Name
+
+select *--cities.Name, count(customers.CityId) as CountCustomers
+from FitnessClub.dbo.Customers as customers
+--cross join FitnessClub.dbo.Customers as customers on cities.Id = 
+left join FitnessClub.dbo.Cities as cities on cities.Id = customers.CityId 
+--full outer join FitnessClub.dbo.Cities as cities on cities.Id = customers.CityId 
+--group by cities.Name
+
+select c.Name, count(cus.name)
+from cities c
+left join customers cus on cus.CityId  = c.id
+group by c.name
+
+select c.Name, count(cus.name)
+from customers cus
+right join cities c on cus.CityId  = c.id
+group by c.name
+
 
 --select 4
 --version 1
@@ -46,19 +65,13 @@ stuff((SELECT ','+convert(nvarchar(3),RoleId)
             ,1,1,'')
 from FitnessClub.dbo.Users as u
 
-select u.Name,	stuff((select ','+convert(nvarchar(20),RoleId)
+--*** задача повышеной сложности
+select u.Name,	stuff((select ','+convert(nvarchar(20),r.Name)
 				from FitnessClub.dbo.UsersRoles as ur
+				inner join FitnessClub..Roles as r on ur.RoleId = r.Id
 				where u.Id=ur.UserId
 				for xml path(''), type).value('.', 'varchar(max)'),1,1,'')
 from FitnessClub.dbo.Users as u
--- version 2 - using by join + concat
---select u.Name
-select u.Name, r.Name
-from FitnessClub.dbo.Users as u
---cross join FitnessClub.dbo.UsersRoles as ur
-inner join FitnessClub.dbo.UsersRoles as ur on u.Id = ur.UserId
---cross join FitnessClub.dbo.Roles as r
-inner join FitnessClub.dbo.Roles as r on r.Id = ur.RoleId
 
 --select 5
 -- version 1
@@ -83,15 +96,15 @@ full join FitnessClub..Tickets as t on c.Id = t.CustomerId
 group by c.Name
 
 --select 7
-select Name from FitnessClub..Customers
+select Id, Name from FitnessClub..Customers
 union 
-select Name from FitnessClub..TicketTypes
+select Id, Name from FitnessClub..TicketTypes
 union 
-select Name from FitnessClub..Cities
+select Id, Name from FitnessClub..Cities
 
 --select 8
 select convert(date, CreatedOn) as Date, count(Id) as 'Count'
 from FitnessClub..Tickets
-group by CreatedOn
+group by convert(date, CreatedOn)
 
 
