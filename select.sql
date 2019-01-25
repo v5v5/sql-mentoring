@@ -105,6 +105,40 @@ select Id, Name from FitnessClub..Cities
 --select 8
 select convert(date, CreatedOn) as Date, count(Id) as 'Count'
 from FitnessClub..Tickets
-group by convert(date, CreatedOn)
+group by cast(CreatedOn as date)
 
+select concat(datepart(yyyy, CreatedOn), '-', datepart(mm, CreatedOn), '-', datepart(dd, CreatedOn)) as Date, count(Id) as 'Count'
+from FitnessClub..Tickets
+group by datepart(yyyy, CreatedOn), datepart(mm, CreatedOn), datepart(dd, CreatedOn)
 
+--select 9
+select * 
+from FitnessClub..Customers
+where Name like '%1%'
+
+--select 10
+select * 
+from FitnessClub..Customers
+where Name like '%4__'
+
+--select 11
+-- IN, EXISTS
+
+--select 12
+go
+create procedure yyyymmdd_proc(@datetime_v datetime)
+as
+begin
+	declare @ymd nvarchar(10)
+	set @ymd = concat(datepart(yyyy, @datetime_v), '-', datepart(mm, @datetime_v), '-', datepart(dd, @datetime_v))
+	return @ymd
+end
+
+--select OBJECT_ID('yyyymmdd_proc', CreatedOn), count(Id) as 'Count'
+--from FitnessClub..Tickets
+--group by datepart(yyyy, CreatedOn), datepart(mm, CreatedOn), datepart(dd, CreatedOn)
+--group by OBJECT_ID('yyyymmdd_proc', CreatedOn)
+
+select OBJECT_ID('yyyymmdd_proc', CreatedOn) as Date, count(Id) as 'Count'
+from FitnessClub..Tickets
+group by OBJECT_ID('yyyymmdd_proc', CreatedOn)
