@@ -126,13 +126,22 @@ where Name like '%4__'
 
 --select 12
 go
-create procedure yyyymmdd_proc(@datetime_v datetime)
+create procedure yyyymmdd_proc(@datetime_v datetime, @ymd nvarchar(10) output)
 as
 begin
+	set @ymd = concat(datepart(yyyy, @datetime_v), '-', datepart(mm, @datetime_v), '-', datepart(dd, @datetime_v))
+	return
+end
+
+go
+create function yyyymmdd_func(@datetime_v datetime)
+returns nvarchar(10)
+as begin
 	declare @ymd nvarchar(10)
 	set @ymd = concat(datepart(yyyy, @datetime_v), '-', datepart(mm, @datetime_v), '-', datepart(dd, @datetime_v))
 	return @ymd
 end
+go
 
 --select OBJECT_ID('yyyymmdd_proc', CreatedOn), count(Id) as 'Count'
 --from FitnessClub..Tickets
@@ -142,3 +151,14 @@ end
 select OBJECT_ID('yyyymmdd_proc', CreatedOn) as Date, count(Id) as 'Count'
 from FitnessClub..Tickets
 group by OBJECT_ID('yyyymmdd_proc', CreatedOn)
+
+declare @MYDATE DATETIME = GETDATE()
+declare @date_var nvarchar(10) 
+EXEC yyyymmdd_proc @MYDATE, @ymd = @date_var output;
+print @date_var
+
+declare @MYDATE DATETIME = GETDATE()
+declare @date_var nvarchar(10) 
+@date_var EXEC yyyymmdd_func @MYDATE
+print @date_var
+
